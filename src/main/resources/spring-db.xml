@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+	</bean>
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="filters" value="${jdbc.filters}" />
+		<property name="connectionProperties" value="druid.stat.mergeSql=true" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+			</list>
+		</property>
+		<!--initialSize: 初始化连接 -->
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<!--maxIdle: 最大空闲连接 -->
+<!-- 		<property name="maxIdle" value="${jdbc.maxIdle}" /> -->
+		<!--minIdle: 最小空闲连接 -->
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<!--maxActive: 最大连接数量 -->
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<!--removeAbandoned: 是否自动回收超时连接 -->
+		<property name="removeAbandoned" value="${jdbc.removeAbandoned}" />
+		<!--removeAbandonedTimeout: 超时时间(以秒数为单位) -->
+		<property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" />
+		<!--maxWait: 超时等待时间以毫秒为单位 6000毫秒/1000等于60秒 -->
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<property name="defaultAutoCommit">
+			<value>true</value>
+		</property>
+		<property name="poolPreparedStatements" value="false" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
+
+		<property name="maxOpenPreparedStatements" value="${jdbc.maxOpenPreparedStatements}" />
+		<property name="logAbandoned" value="${jdbc.logAbandoned}" />
+
+		<property name="validationQuery" value="${jdbc.validationQuery.mysql}" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.lingban.futures.model" />
+		<property name="configLocation" value="classpath:mybatis-conf.xml" />
+
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>
+							dialect=mysql
+							pageSizeZero=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+
+	</bean>
+
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.**.dao" />
+		<property name="markerInterface" value="tk.mybatis.mapper.common.Mapper" />
+		<property name="properties">
+			<value>
+				mappers=tk.mybatis.mapper.common.Mapper
+			</value>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

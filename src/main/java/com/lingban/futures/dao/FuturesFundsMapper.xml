@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingban.futures.dao.FuturesFundsMapper">
+	<select id="getFuturesFunds" parameterType="futuresFunds" resultType="futuresFunds">
+		SELECT f.id, f.code, f.buyNum, f.sellNum, f.funds, f.baseFunds, f.nowFunds, 
+			ROUND(((f.funds - f.baseFunds) * 100) / f.basefunds, 2) AS gainAndLoss
+		FROM future_funds f 
+
+		<where>
+			<if test="orderBy != null">
+				ORDER BY #{orderBy}
+			</if>
+		</where>
+
+	</select>
+
+</mapper>
