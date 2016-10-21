@@ -1,30 +1,29 @@
 package com.lingban.futures.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
 
-@Table(name = "future_funds")
+@Table(name = "futures_funds_history")
 @NameStyle(Style.normal)
-public class FuturesFunds {
+public class FuturesFundsHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String code;
-	private Integer buyNum;
-	private Integer sellNum;
-	private BigDecimal funds;
 	private BigDecimal baseFunds;
 	private BigDecimal nowFunds;
-	@Transient
+	private LocalDate createTime;
 	private Double changeRate;
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -39,30 +38,6 @@ public class FuturesFunds {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public Integer getBuyNum() {
-		return buyNum;
-	}
-
-	public void setBuyNum(Integer buyNum) {
-		this.buyNum = buyNum;
-	}
-
-	public Integer getSellNum() {
-		return sellNum;
-	}
-
-	public void setSellNum(Integer sellNum) {
-		this.sellNum = sellNum;
-	}
-
-	public BigDecimal getFunds() {
-		return funds;
-	}
-
-	public void setFunds(BigDecimal funds) {
-		this.funds = funds;
 	}
 
 	public BigDecimal getBaseFunds() {
@@ -81,6 +56,14 @@ public class FuturesFunds {
 		this.nowFunds = nowFunds;
 	}
 
+	public LocalDate getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(LocalDate createTime) {
+		this.createTime = createTime;
+	}
+
 	public Double getChangeRate() {
 		return changeRate;
 	}
@@ -89,10 +72,5 @@ public class FuturesFunds {
 		this.changeRate = changeRate;
 	}
 
-	@Override
-	public String toString() {
-		return "FuturesFunds [id=" + id + ", code=" + code + ", buyNum=" + buyNum + ", sellNum=" + sellNum + ", funds="
-				+ funds + ", baseFunds=" + baseFunds + ", nowFunds=" + nowFunds + ", changeRate=" + changeRate + "]";
-	}
 
 }
