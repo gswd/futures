@@ -13,7 +13,7 @@ import tk.mybatis.mapper.code.Style;
 
 @Table(name = "future_funds")
 @NameStyle(Style.normal)
-public class FuturesFunds {
+public class Funds {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

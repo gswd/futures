@@ -1,47 +1,36 @@
 package com.lingban.futures.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lingban.futures.common.DateQueryParam;
-import com.lingban.futures.common.PageParam;
-import com.lingban.futures.common.Paging;
-import com.lingban.futures.model.FuturesFunds;
-import com.lingban.futures.service.FuturesFundsService;
+import com.lingban.futures.model.FundsHistory;
+import com.lingban.futures.service.FundsHistoryService;
 import com.lingban.futures.vo.StatusCode;
 
 @RestController
 @RequestMapping(value = "/statistics")
 public class FuturesStatisticsController extends BasicController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+	private Logger logger = LoggerFactory.getLogger(FuturesStatisticsController.class);
 	@Autowired
-	private FuturesFundsService futuresFundsService;
+	private FundsHistoryService fundsHistoryService;
 
-	@RequestMapping(value="/gainAndLoss",method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	public String futuresFundsInfo(PageParam pageParam, DateQueryParam dateParam) {
+	@RequestMapping(value="/gainAndLoss" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	public String futuresFundsInfo(DateQueryParam dateParam, @RequestParam(required = false) String orderType) {
 		
-		Paging<FuturesFunds> page = futuresFundsService.selectFuturesFundsPage(pageParam, dateParam);
+		List<FundsHistory> fundsHistoryList = fundsHistoryService.getFundsHistoryByPeriod(dateParam, orderType);
 		
-		logger.info("GET /t/user/login   futuresFundsInfo() ...");
-		return buildResultInfo(StatusCode.SUCCESS, page);
+		logger.info("GET /gainAndLoss   futuresFundsInfo() ...");
+		return buildResultInfo(StatusCode.SUCCESS, fundsHistoryList);
 
-	}
-	@RequestMapping(value="/gainAndLoss/{futuresCode}",method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	public String futuresFundsInfoByCode(PageParam pageParam, DateQueryParam dateParam, @PathVariable String futuresCode) {
-		
-		Paging<FuturesFunds> page = futuresFundsService.selectFuturesFundsWithPeriod(pageParam, dateParam, futuresCode);
-		
-		logger.info("GET /t/user/login   futuresFundsInfo() ...");
-		return buildResultInfo(StatusCode.SUCCESS, page);
-		
 	}
 
 }

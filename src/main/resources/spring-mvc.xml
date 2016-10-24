@@ -12,11 +12,9 @@
 
 	<mvc:default-servlet-handler />
 
-	<context:component-scan base-package="com.lingban.futures.controller"
-		use-default-filters="false">
+	<context:component-scan base-package="com.lingban.futures.controller" use-default-filters="false">
 		<!-- 如果扫描了service，会导致事务失效！ -->
-		<context:include-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
 

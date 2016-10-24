@@ -1,14 +1,11 @@
-package com.lingban.futures.service;
+package com.lingban.futures.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.pagehelper.PageHelper;
-
 import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.entity.Example;
 
 @Service
 public abstract class AbstractBaseService<T> {
@@ -30,20 +27,20 @@ public abstract class AbstractBaseService<T> {
     	return mapper.selectAll();
     }
 
-    /**
-     * 单表分页查询
-     * 
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    public List<T> selectPage(int pageNum,int pageSize){
-        PageHelper.startPage(pageNum, pageSize);
-        return mapper.selectAll();
-    }
-    
-    public List<T> selectPage(int pageNum,int pageSize, Example example){
-    	PageHelper.startPage(pageNum, pageSize);
-    	return mapper.selectByExample(example);
-    }
+//    /**
+//     * 单表分页查询
+//     * 
+//     * @param pageNum
+//     * @param pageSize
+//     * @return
+//     */
+//    public List<T> selectPage(int pageNum,int pageSize){
+//        PageHelper.startPage(pageNum, pageSize);
+//        return mapper.selectAll();
+//    }
+//    
+//    public List<T> selectPage(int pageNum,int pageSize, Example example){
+//    	PageHelper.startPage(pageNum, pageSize);
+//    	return mapper.selectByExample(example);
+//    }
 }

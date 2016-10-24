@@ -1,7 +1,7 @@
 package com.lingban.futures.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,17 +13,16 @@ import tk.mybatis.mapper.code.Style;
 
 @Table(name = "futures_funds_history")
 @NameStyle(Style.normal)
-public class FuturesFundsHistory {
+public class FundsHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String code;
 	private BigDecimal baseFunds;
 	private BigDecimal nowFunds;
-	private LocalDate createTime;
+	private Date createTime;
 	private Double changeRate;
-	
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -56,11 +55,11 @@ public class FuturesFundsHistory {
 		this.nowFunds = nowFunds;
 	}
 
-	public LocalDate getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(LocalDate createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
@@ -71,6 +70,5 @@ public class FuturesFundsHistory {
 	public void setChangeRate(Double changeRate) {
 		this.changeRate = changeRate;
 	}
-
 
 }

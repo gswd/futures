@@ -14,8 +14,7 @@
 	xmlns:util="http://www.springframework.org/schema/util">
 
 	<context:component-scan base-package="com.lingban.futures">
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
 	<context:property-placeholder location="classpath*:*.properties" />
