@@ -2,10 +2,12 @@ package com.lingban.futures.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lingban.futures.common.DateQueryParam;
 import com.lingban.futures.model.FundsHistory;
 import com.lingban.futures.model.PredictAccuracyHistoryDays;
+import com.lingban.futures.model.SocialEmotionHistory;
 import com.lingban.futures.model.SocialEmotionHistoryDays;
 import com.lingban.futures.service.FundsHistoryService;
 import com.lingban.futures.service.PredictAccuracyService;
@@ -93,10 +96,9 @@ public class FuturesStatisticsController extends BasicController {
 	 * @return
 	 */
 	@RequestMapping(value="/socialEmotion/history/{futuresCode}/min/{granularity}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	public String socialEmotionHistoryWithMin(@RequestParam LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity ) {
+	public String socialEmotionHistoryWithMin(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity) {
 		
-		//TODO
-//		List<SocialEmotionHistoryDays> socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryDays(dateParam, futuresCode);
+		Map<String, SocialEmotionHistory> socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistory(localDate, futuresCode, granularity);
 		
 		logger.info("GET /socialEmotion/history/{futuresCode}/min/{granularity}   socialEmotionHistoryWithMin() ...");
 		return buildResultInfo(StatusCode.SUCCESS, null);

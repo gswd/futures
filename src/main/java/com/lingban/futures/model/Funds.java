@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
 
@@ -16,6 +18,7 @@ import tk.mybatis.mapper.code.Style;
 public class Funds {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JSONField(serialize=false)
 	private Integer id;
 	private String code;
 	private Integer buyNum;
