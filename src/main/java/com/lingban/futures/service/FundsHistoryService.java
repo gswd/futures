@@ -8,9 +8,12 @@ import com.lingban.futures.model.FundsHistory;
 public interface FundsHistoryService{
 	
 	/**
-	 * 通过一段时间查询这段时间所有品种的资金情况
+	 * 查询某一段时间的资金盈亏情况
+	 * @param orderType 排序方式  ASC 小->大  DESC 大->小
 	 * @return
 	 */
 	public List<FundsHistory> getFundsHistoryByPeriod(DateQueryParam dateParam, String orderType);
+
+	public List<FundsHistory> getFundsHistoryByPeriodAndCode(DateQueryParam dateParam, String futuresCode);
 	
 }

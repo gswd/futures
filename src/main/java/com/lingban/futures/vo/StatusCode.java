@@ -1,8 +1,8 @@
 package com.lingban.futures.vo;
 
 public enum StatusCode {
-	SUCCESS(0, "成功"), 
-	FAIL(-1, "失败");
+	SUCCESS(0, "success"), 
+	FAIL(-1, "fail");
 	
 	private Integer code;
 	private String msg;
