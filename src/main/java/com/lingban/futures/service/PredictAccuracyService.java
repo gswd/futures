@@ -16,7 +16,7 @@ public interface PredictAccuracyService{
 	 * 获取一段时间预测成功率，时间粒度为天.
 	 * @return 每天的预测数据集合
 	 */
-	public List<PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam, String futuresCode);
+	public Map<String, PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam, String futuresCode);
 	
 	/**
 	 * 某段时间预测成功率统计

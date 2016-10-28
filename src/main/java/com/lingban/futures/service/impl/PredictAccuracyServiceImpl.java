@@ -22,8 +22,8 @@ import com.lingban.futures.dao.FuturesRecordsMapper;
 import com.lingban.futures.dao.PredictAccuracyHistoryDaysMapper;
 import com.lingban.futures.model.FuturesRecords;
 import com.lingban.futures.model.PredictAccuracyHistoryDays;
-import com.lingban.futures.model.SocialEmotionHistoryDays;
 import com.lingban.futures.service.PredictAccuracyService;
+import com.lingban.futures.utils.DateUtils;
 import com.lingban.futures.vo.PredictAccuracyVO;
 
 import tk.mybatis.mapper.entity.Example;
@@ -38,7 +38,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 	protected FuturesRecordsMapper futuresRecordsMapper;
 
 	@Override
-	public List<PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam,
+	public Map<String, PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam,
 			String futuresCode) {
 		Example example = new Example(PredictAccuracyHistoryDays.class);
 		Criteria criteria = example.createCriteria();
@@ -53,18 +53,19 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 		example.orderBy("createTime").asc();
 		List<PredictAccuracyHistoryDays> predictAccuracyHistoryDays = predictAccuracyHistoryDaysMapper.selectByExample(example);
 		
-		List<PredictAccuracyVO> PredictAccuracyVOList = predictAccuracyHistoryDays.stream().map(pah -> {
-			PredictAccuracyVO vo = new PredictAccuracyVO();
-			vo.setCode(pah.getCode());
-			vo.setCorrectTimes(pah.getCorrect());
-			vo.setId(pah.getId());
-			vo.setAccuracy(pah.getAccuracy());
-			vo.setTotalTimes(pah.getNum());
-			vo.setTimePoint(pah.getCreateTime());
-			return vo;
-		}).collect(Collectors.toList());
+		Map<String, PredictAccuracyVO> PredictAccuracyVOMap = predictAccuracyHistoryDays.stream()
+				.collect(Collectors.toMap(pa -> DateUtils.Date2LocalDateStr(pa.getCreateTime()), pah -> {
+					PredictAccuracyVO vo = new PredictAccuracyVO();
+					vo.setCode(pah.getCode());
+					vo.setCorrectTimes(pah.getCorrect());
+					vo.setId(pah.getId());
+					vo.setAccuracy(pah.getAccuracy());
+					vo.setTotalTimes(pah.getNum());
+					vo.setTimePoint(pah.getCreateTime());
+					return vo;
+				}, (existingVal, newVal) -> newVal, LinkedHashMap::new));
 		
-		return PredictAccuracyVOList;
+		return PredictAccuracyVOMap;
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 	
 	@Override
 	public Map<String, PredictAccuracyVO> getPredictAccuracyOfOneDay(LocalDate localDate, String futuresCode, String granularity) {
-		Example example = new Example(SocialEmotionHistoryDays.class);
+		Example example = new Example(FuturesRecords.class);
 		Criteria criteria = example.createCriteria();
 		
 		//把结束日期延后一天，以便查询结束时间的当天数据
@@ -124,6 +125,9 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 					Collectors.partitioningBy(e1 -> e1.getPriceTrend().equals(e1.getPredict()), Collectors.counting())));
 			break;
 		default:
+			predictRecordsWithMin = futuresRecords.stream().collect(Collectors.groupingBy(
+					e -> findBelongToTimes(e, BissinesConfig.TIMES_60MIN), LinkedHashMap::new,
+					Collectors.partitioningBy(e1 -> e1.getPriceTrend().equals(e1.getPredict()), Collectors.counting())));
 			break;
 		}
 

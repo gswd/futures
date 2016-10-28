@@ -13,6 +13,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
+
 /**
  * 期货行情记录以及预测信息
  *
@@ -22,7 +23,7 @@ import tk.mybatis.mapper.code.Style;
 public class FuturesRecords {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JSONField(serialize=false)
+	@JSONField(serialize = false)
 	private Integer id;
 	private String code;
 	// 实际变化趋势
@@ -32,10 +33,15 @@ public class FuturesRecords {
 	// 正确率
 	@Transient
 	private BigDecimal accuracy;
-	
+
 	// 时间
-	@JSONField(format="yyyy-MM-dd")
+	@JSONField(format = "yyyy-MM-dd")
 	private Date createTime;
+
+	// 最新价
+	private BigDecimal newPrice;
+	// 结算价
+	private BigDecimal settlement;
 
 	public Integer getId() {
 		return id;
@@ -83,6 +89,29 @@ public class FuturesRecords {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public BigDecimal getNewPrice() {
+		return newPrice;
+	}
+
+	public void setNewPrice(BigDecimal newPrice) {
+		this.newPrice = newPrice;
+	}
+
+	public BigDecimal getSettlement() {
+		return settlement;
+	}
+
+	public void setSettlement(BigDecimal settlement) {
+		this.settlement = settlement;
+	}
+
+	@Override
+	public String toString() {
+		return "FuturesRecords [id=" + id + ", code=" + code + ", priceTrend=" + priceTrend + ", predict=" + predict
+				+ ", accuracy=" + accuracy + ", createTime=" + createTime + ", newPrice=" + newPrice + ", settlement="
+				+ settlement + "]";
 	}
 
 }

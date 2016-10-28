@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.lingban.futures.common.cfg.BissinesConfig;
 import com.lingban.futures.model.SocialEmotionHistory;
 import com.lingban.futures.model.SocialEmotionHistoryDays;
 import com.lingban.futures.service.SocialEmotionService;
+import com.lingban.futures.utils.DateUtils;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -35,7 +37,7 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 	protected Mapper<SocialEmotionHistory> socialEmotionHistoryMapper;
 
 	@Override
-	public List<SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode) {
+	public Map<String, SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode) {
 
 		Example example = new Example(SocialEmotionHistoryDays.class);
 		Criteria criteria = example.createCriteria();
@@ -52,7 +54,11 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 		List<SocialEmotionHistoryDays> socialEmotionHistoryDays = socialEmotionHistoryDaysMapper
 				.selectByExample(example);
 
-		return socialEmotionHistoryDays;
+		LinkedHashMap<String, SocialEmotionHistoryDays> SocialEmotionHistoryDaysMap = socialEmotionHistoryDays.stream()
+				.collect(Collectors.toMap(seh -> DateUtils.Date2LocalDateStr(seh.getCreateTime()), Function.identity(),
+						(existingVal, newVal) -> newVal, LinkedHashMap::new));
+
+		return SocialEmotionHistoryDaysMap;
 	}
 
 	@Override

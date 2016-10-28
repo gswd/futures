@@ -19,8 +19,10 @@ import com.lingban.futures.model.FundsHistory;
 import com.lingban.futures.model.SocialEmotionHistory;
 import com.lingban.futures.model.SocialEmotionHistoryDays;
 import com.lingban.futures.service.FundsHistoryService;
+import com.lingban.futures.service.MarketService;
 import com.lingban.futures.service.PredictAccuracyService;
 import com.lingban.futures.service.SocialEmotionService;
+import com.lingban.futures.vo.MarketInfoVO;
 import com.lingban.futures.vo.PredictAccuracyVO;
 import com.lingban.futures.vo.StatusCode;
 
@@ -35,6 +37,8 @@ public class FuturesStatisticsController extends BasicController {
 	private SocialEmotionService socialEmotionService;
 	@Autowired
 	private PredictAccuracyService predictAccuracyService;
+	@Autowired
+	private MarketService marketService;
 	
 	
 	//---------------------盈亏统计---------------------------------------
@@ -80,7 +84,7 @@ public class FuturesStatisticsController extends BasicController {
 	@RequestMapping(value="/socialEmotion/history/{futuresCode}/day" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String socialEmotionHistory(DateQueryParam dateParam, @PathVariable String futuresCode) {
 		
-		List<SocialEmotionHistoryDays> socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryDays(dateParam, futuresCode);
+		Map<String, SocialEmotionHistoryDays> socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryDays(dateParam, futuresCode);
 		
 		logger.info("GET /socialEmotion/history/{futuresCode}/day   SocialEmotionHistory() ...");
 		return buildResultInfo(StatusCode.SUCCESS, socialEmotionHistoryDays);
@@ -117,10 +121,13 @@ public class FuturesStatisticsController extends BasicController {
 	 * @return
 	 */
 	@RequestMapping(value="/market/history/{futuresCode}/day" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	public String marketDataByCode(@RequestParam DateQueryParam dateParam, @PathVariable String futuresCode ) {
+	public String marketDataByCode(DateQueryParam dateParam, @PathVariable String futuresCode ) {
 		//TODO
+		
+		Map<String, MarketInfoVO> MarketInfoVO = marketService.getMarketInfoDays(dateParam, futuresCode);
+		
 		logger.info("GET /market/history/{futuresCode}/day   marketDataByCode() ...");
-		return buildResultInfo(StatusCode.SUCCESS, null);
+		return buildResultInfo(StatusCode.SUCCESS, MarketInfoVO);
 		
 	}
 	
@@ -134,12 +141,12 @@ public class FuturesStatisticsController extends BasicController {
 	 * @return
 	 */
 	@RequestMapping(value="/market/history/{futuresCode}/min/{granularity}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	public String marketDataByCodeWithMin(@RequestParam LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity ) {
+	public String marketDataByCodeWithMin(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity ) {
 		
 		//TODO
-		
+		Map<String, MarketInfoVO> MarketInfoVO = marketService.getMarketInfoOfOneDay(localDate, futuresCode, granularity);
 		logger.info("GET /market/history/{futuresCode}/min/{granularity}   marketDataByCodeWithMin() ...");
-		return buildResultInfo(StatusCode.SUCCESS, null);
+		return buildResultInfo(StatusCode.SUCCESS, MarketInfoVO);
 		
 	}
 	
@@ -154,8 +161,6 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/predictAccuracy/history/{futuresCode}/min/{granularity}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String predictAccuracyHistoryWithMin(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity ) {
-		
-		//TODO
 		
 		Map<String, PredictAccuracyVO> predictAccuracyVO = predictAccuracyService.getPredictAccuracyOfOneDay(localDate, futuresCode, granularity);
 		logger.info("GET /predictAccuracy/history/{futuresCode}/min/{granularity}   predictAccuracyHistoryWithMin() ...");
@@ -172,7 +177,7 @@ public class FuturesStatisticsController extends BasicController {
 	@RequestMapping(value="/predictAccuracy/history/{futuresCode}/day" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String predictAccuracyHistory(DateQueryParam dateParam, @PathVariable String futuresCode) {
 		
-		List<PredictAccuracyVO> predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracyHistoryDays(dateParam, futuresCode);
+		Map<String, PredictAccuracyVO> predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracyHistoryDays(dateParam, futuresCode);
 		logger.info("GET /predictAccuracy/history/{futuresCode}/day   predictAccuracyHistory() ...");
 		return buildResultInfo(StatusCode.SUCCESS, predictAccuracyHistoryDays);
 		

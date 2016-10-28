@@ -1,7 +1,6 @@
 package com.lingban.futures.service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 import com.lingban.futures.common.DateQueryParam;
@@ -14,7 +13,7 @@ public interface SocialEmotionService{
 	 * 获取社会情绪历史信息，时间粒度为天.
 	 * @return
 	 */
-	public List<SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode);
+	public Map<String, SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode);
 
 	/**
 	 * 返回时间粒度对应的情绪对象
