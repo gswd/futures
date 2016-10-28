@@ -206,12 +206,21 @@
 	</dependencies>
 
 	<build>
+		<finalName>ROOT</finalName>
 		<resources>
 			<resource>
 				<directory>${basedir}/src/main/resources</directory>
 			</resource>
 			<resource>
 				<directory>${basedir}/src/main/resources/${profile.active}</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+				</includes>
 				<filtering>true</filtering>
 			</resource>
 		</resources>

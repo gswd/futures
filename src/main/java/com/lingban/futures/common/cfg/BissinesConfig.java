@@ -1,9 +1,11 @@
 package com.lingban.futures.common.cfg;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -29,6 +31,10 @@ public class BissinesConfig {
 	 */
 	public static Map<String, Futures> FUTURE;
 	
+	public static final List<LocalTime> TIMES_5MIN = generateTimes(5);
+	public static final List<LocalTime> TIMES_30MIN = generateTimes(30);
+	public static final List<LocalTime> TIMES_60MIN = generateTimes(60);
+	
 	
 	@Autowired
 	private FuturesInfoService futuresInfoService;
@@ -44,4 +50,13 @@ public class BissinesConfig {
 		FUTURE.forEach((k, v) -> logger.info("{} : {}", k, v.getName()));
 	}
 	
+	/**
+	 * 生成指定时间间隔的本地时间集合
+	 * @param timeUnit
+	 * @return
+	 */
+	private static List<LocalTime> generateTimes(int timeInterval){
+		
+		return Stream.iterate(LocalTime.of(timeInterval/60, timeInterval%60), time -> time.plusMinutes(timeInterval)).limit(24*60/timeInterval).collect(Collectors.toList());
+	}
 }

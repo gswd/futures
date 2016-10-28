@@ -2,7 +2,6 @@ package com.lingban.futures.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -48,9 +47,9 @@ public class FundsHistoryServiceImpl extends AbstractBaseService<FundsHistory> i
 			fundsHistory.setNowFunds(nowFunds);
 			fundsHistory.setCode(k);
 			
-			//(baseFunds + nowFunds) * 100 / baseFunds
+			//(nowFunds - baseFunds) * 100 / baseFunds
 			//保留两位小数，向（距离）最近的一边舍入，除非两边（的距离）是相等,如果是这样，向上舍入, 1.55保留一位小数结果为1.6
-			fundsHistory.setChangeRate(baseFunds.subtract(nowFunds).multiply(new BigDecimal("100")).divide(baseFunds, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			fundsHistory.setChangeRate(nowFunds.subtract(baseFunds).multiply(new BigDecimal("100")).divide(baseFunds, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			
 			fundsHistoryResult.add(fundsHistory);
 		});

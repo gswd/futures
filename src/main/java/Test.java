@@ -1,4 +1,9 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Test {
 	public static void main(String[] args) {
@@ -14,7 +19,19 @@ public class Test {
 //		  System.out.println((int) (d * 100));
 		
 		
-		LocalDate endOfFeb = LocalDate.parse("2014-02-28"); 
-		System.out.println(endOfFeb);
+//		LocalDate endOfFeb = LocalDate.parse("2014-02-28"); 
+//		System.out.println(endOfFeb);
+		
+		List<LocalTime> localTimes = Stream.iterate(LocalTime.of(0, 5), time -> time.plusMinutes(5)).limit(24*60/5).collect(Collectors.toList());
+
+//		localTimes.forEach(System.out :: println);
+		
+//		System.out.println("=============" + LocalTime.of(0, 20).isBefore(LocalTime.of(0, 5)));
+//		
+//		
+//		localTimes.stream().filter(x -> !LocalTime.of(0, 30).isAfter(x))
+//				.findFirst().ifPresent(System.out :: println);;
+		
+		System.out.println(LocalTime.parse("10:00"));
 	}
 }

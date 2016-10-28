@@ -7,28 +7,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
-
 /**
- * 预测信息历史，时间粒度为天
+ * 期货行情记录以及预测信息
+ *
  */
-@Table(name = "futures_predict_accuracy_history_days")
+@Table(name = "futures_records")
 @NameStyle(Style.normal)
-public class PredictAccuracyHistoryDays {
+public class FuturesRecords {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JSONField(serialize=false)
 	private Integer id;
 	private String code;
-	// 预测总次数
-	private Long num;
-	// 预测正确次数
-	private Long correct;
+	// 实际变化趋势
+	private Integer priceTrend;
+	// 趋势预测
+	private Integer predict;
 	// 正确率
+	@Transient
 	private BigDecimal accuracy;
 	
 	// 时间
@@ -51,20 +53,20 @@ public class PredictAccuracyHistoryDays {
 		this.code = code;
 	}
 
-	public Long getNum() {
-		return num;
+	public Integer getPriceTrend() {
+		return priceTrend;
 	}
 
-	public void setNum(Long num) {
-		this.num = num;
+	public void setPriceTrend(Integer priceTrend) {
+		this.priceTrend = priceTrend;
 	}
 
-	public Long getCorrect() {
-		return correct;
+	public Integer getPredict() {
+		return predict;
 	}
 
-	public void setCorrect(Long correct) {
-		this.correct = correct;
+	public void setPredict(Integer predict) {
+		this.predict = predict;
 	}
 
 	public BigDecimal getAccuracy() {
@@ -83,9 +85,4 @@ public class PredictAccuracyHistoryDays {
 		this.createTime = createTime;
 	}
 
-	@Override
-	public String toString() {
-		return "PredictAccuracyHistoryDays [id=" + id + ", code=" + code + ", num=" + num + ", correct=" + correct
-				+ ", accuracy=" + accuracy + ", createTime=" + createTime + "]";
-	}
 }

@@ -23,7 +23,7 @@ public interface SocialEmotionService{
 	 * @param granularity 时间粒度
 	 * @return
 	 */
-	public Map<String, SocialEmotionHistory> getSocialEmotionHistory(LocalDate localDate, String futuresCode,
+	public Map<String, SocialEmotionHistory> getSocialEmotionHistoryOfOneDay(LocalDate localDate, String futuresCode,
 			String granularity);
 	
 }

@@ -1,8 +1,8 @@
 package com.lingban.futures.dao;
 
 import java.util.List;
+import java.util.Map;
 
-import com.lingban.futures.common.DateQueryParam;
 import com.lingban.futures.model.PredictAccuracyHistoryDays;
 
 import tk.mybatis.mapper.common.Mapper;
@@ -14,5 +14,5 @@ public interface PredictAccuracyHistoryDaysMapper extends Mapper<PredictAccuracy
 	 * @param futuresCode
 	 * @return
 	 */
-	public List<PredictAccuracyHistoryDays> getPredictAccuracySummary(DateQueryParam dateParam, String futuresCode);
+	public List<PredictAccuracyHistoryDays> getPredictAccuracySummary(Map<String, Object> criteria);
 }

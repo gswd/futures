@@ -1,19 +1,25 @@
 package com.lingban.futures.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.DoubleSummaryStatistics;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lingban.futures.common.DateQueryParam;
+import com.lingban.futures.common.cfg.BissinesConfig;
 import com.lingban.futures.model.SocialEmotionHistory;
 import com.lingban.futures.model.SocialEmotionHistoryDays;
 import com.lingban.futures.service.SocialEmotionService;
-import com.lingban.futures.utils.DateUtils;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -50,7 +56,7 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 	}
 
 	@Override
-	public Map<String, SocialEmotionHistory> getSocialEmotionHistory(LocalDate localDate, String futuresCode, String granularity) {
+	public Map<String, SocialEmotionHistory> getSocialEmotionHistoryOfOneDay(LocalDate localDate, String futuresCode, String granularity) {
 		
 		Example example = new Example(SocialEmotionHistoryDays.class);
 		Criteria criteria = example.createCriteria();
@@ -60,9 +66,60 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 		example.orderBy("createTime").asc();
 		List<SocialEmotionHistory> socialEmotionHistory = socialEmotionHistoryMapper.selectByExample(example);
 		
-		Map<String, SocialEmotionHistory> socialEmotionHistory5Min = socialEmotionHistory.stream().collect(Collectors.toMap(d -> DateUtils.Date2StrHourMinute(d.getCreateTime()), Function.identity()));		
-		return null;
+//		Map<String, SocialEmotionHistory> socialEmotionHistory5Min = socialEmotionHistory.stream().collect(Collectors.toMap(d -> DateUtils.Date2StrHourMinute(d.getCreateTime()), Function.identity()));		
+		
+		Map<String, List<SocialEmotionHistory>> socialEmotionHistoryWithMin = null;
+		
+		switch (granularity) {
+		case "5":
+			socialEmotionHistoryWithMin = socialEmotionHistory.stream()
+					.collect(Collectors.groupingBy(e -> findBelongToTimes(e, BissinesConfig.TIMES_5MIN), LinkedHashMap :: new, Collectors.toList()));
+			break;
+
+		case "30":
+			socialEmotionHistoryWithMin = socialEmotionHistory.stream()
+					.collect(Collectors.groupingBy(e -> findBelongToTimes(e, BissinesConfig.TIMES_30MIN), LinkedHashMap :: new, Collectors.toList()));
+			break;
+		case "60":
+			socialEmotionHistoryWithMin = socialEmotionHistory.stream()
+					.collect(Collectors.groupingBy(e -> findBelongToTimes(e, BissinesConfig.TIMES_60MIN), LinkedHashMap :: new, Collectors.toList()));
+			break;
+		default:
+			socialEmotionHistoryWithMin = socialEmotionHistory.stream()
+					.collect(Collectors.groupingBy(e -> findBelongToTimes(e, BissinesConfig.TIMES_60MIN), LinkedHashMap :: new, Collectors.toList()));
+			break;
+		}
+
+		Map<String, SocialEmotionHistory> socialEmotionHistoryMap = new LinkedHashMap<>();
+		
+		socialEmotionHistoryWithMin.forEach((k, v)-> {
+			
+			DoubleSummaryStatistics negativeSummary = v.stream().collect(Collectors.summarizingDouble(v1 -> v1.getNegative().doubleValue()));
+			negativeSummary.getAverage();
+			
+
+			DoubleSummaryStatistics positiveSummary = v.stream().collect(Collectors.summarizingDouble(v1 -> v1.getPositive().doubleValue()));
+			positiveSummary.getAverage();
+			
+			
+			SocialEmotionHistory se = new SocialEmotionHistory();
+			
+			se.setCode(futuresCode);
+			se.setPositive(BigDecimal.valueOf(v.stream().collect(Collectors.averagingDouble(v1 -> v1.getPositive().doubleValue()))));
+			se.setNegative(BigDecimal.valueOf(v.stream().collect(Collectors.averagingDouble(v1 -> v1.getNegative().doubleValue()))));
+			
+			socialEmotionHistoryMap.put(k, se);
+		});
+		
+		return socialEmotionHistoryMap;
 	}
 
 	
+	private String findBelongToTimes(SocialEmotionHistory seh, List<LocalTime> TimesList) {
+
+		Optional<LocalTime> opt = TimesList.stream().filter(x -> !LocalDateTime
+				.ofInstant(seh.getCreateTime().toInstant(), ZoneId.systemDefault()).toLocalTime().withSecond(0).isAfter(x))
+				.findFirst();
+		return opt.orElse(TimesList.get(TimesList.size() - 1)).toString();
+	}
 }
