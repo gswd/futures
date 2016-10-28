@@ -13,7 +13,7 @@ public interface SocialEmotionService{
 	 * 获取社会情绪历史信息，时间粒度为天.
 	 * @return
 	 */
-	public Map<String, SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode);
+	public Map<String, SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode) throws Exception;
 
 	/**
 	 * 返回时间粒度对应的情绪对象
@@ -23,6 +23,6 @@ public interface SocialEmotionService{
 	 * @return
 	 */
 	public Map<String, SocialEmotionHistory> getSocialEmotionHistoryOfOneDay(LocalDate localDate, String futuresCode,
-			String granularity);
+			String granularity) throws Exception;
 	
 }

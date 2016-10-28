@@ -39,7 +39,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 
 	@Override
 	public Map<String, PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam,
-			String futuresCode) {
+			String futuresCode) throws Exception {
 		Example example = new Example(PredictAccuracyHistoryDays.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("code", futuresCode);
@@ -69,7 +69,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 	}
 
 	@Override
-	public List<PredictAccuracyVO> getPredictAccuracySummary(DateQueryParam dateParam, String futuresCode, String orderType) {
+	public List<PredictAccuracyVO> getPredictAccuracySummary(DateQueryParam dateParam, String futuresCode, String orderType) throws Exception {
 		
 		Map<String, Object> criteria = new HashMap<>();
 		criteria.put("startDate", dateParam.getStartDate());
@@ -94,7 +94,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 	}
 	
 	@Override
-	public Map<String, PredictAccuracyVO> getPredictAccuracyOfOneDay(LocalDate localDate, String futuresCode, String granularity) {
+	public Map<String, PredictAccuracyVO> getPredictAccuracyOfOneDay(LocalDate localDate, String futuresCode, String granularity) throws Exception {
 		Example example = new Example(FuturesRecords.class);
 		Criteria criteria = example.createCriteria();
 		

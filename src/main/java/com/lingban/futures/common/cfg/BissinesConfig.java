@@ -45,7 +45,13 @@ public class BissinesConfig {
 	public void init(){
 		logger.info("加载期货品种信息...");
 		//加载期货品种信息
-		List<Futures> futures = futuresInfoService.selectAll();
+		List<Futures> futures = null;
+		try {
+			futures = futuresInfoService.selectAll();
+		} catch (Exception e) {
+			logger.error("init futures Error...\n\r {}", e.getMessage());
+			System.exit(1);
+		}
 		FUTURE = futures.stream().collect(Collectors.toMap(Futures :: getCode, Function.identity()));
 		FUTURE.forEach((k, v) -> logger.info("{} : {}", k, v.getName()));
 	}

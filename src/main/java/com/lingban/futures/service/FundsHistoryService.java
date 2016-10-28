@@ -12,8 +12,8 @@ public interface FundsHistoryService{
 	 * @param orderType 排序方式  ASC 小->大  DESC 大->小
 	 * @return
 	 */
-	public List<FundsHistory> getFundsHistoryByPeriod(DateQueryParam dateParam, String orderType);
+	public List<FundsHistory> getFundsHistoryByPeriod(DateQueryParam dateParam, String orderType) throws Exception;
 
-	public List<FundsHistory> getFundsHistoryByPeriodAndCode(DateQueryParam dateParam, String futuresCode);
+	public List<FundsHistory> getFundsHistoryByPeriodAndCode(DateQueryParam dateParam, String futuresCode) throws Exception;
 	
 }

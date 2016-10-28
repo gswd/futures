@@ -16,7 +16,7 @@ public interface PredictAccuracyService{
 	 * 获取一段时间预测成功率，时间粒度为天.
 	 * @return 每天的预测数据集合
 	 */
-	public Map<String, PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam, String futuresCode);
+	public Map<String, PredictAccuracyVO> getPredictAccuracyHistoryDays(DateQueryParam dateParam, String futuresCode) throws Exception;
 	
 	/**
 	 * 某段时间预测成功率统计
@@ -25,7 +25,7 @@ public interface PredictAccuracyService{
 	 * @param orderType null则不排序
 	 * @return 指定品种这端时间的预测正确率
 	 */
-	public List<PredictAccuracyVO> getPredictAccuracySummary(DateQueryParam dateParam, String futuresCode, String orderType);
+	public List<PredictAccuracyVO> getPredictAccuracySummary(DateQueryParam dateParam, String futuresCode, String orderType) throws Exception;
 	
 	/**
 	 * 返回某天预测正确率详情
@@ -34,6 +34,6 @@ public interface PredictAccuracyService{
 	 * @param granularity 时间粒度 5 、 30、 60 
 	 * @return
 	 */
-	public Map<String, PredictAccuracyVO> getPredictAccuracyOfOneDay(LocalDate localDate, String futuresCode, String granularity);
+	public Map<String, PredictAccuracyVO> getPredictAccuracyOfOneDay(LocalDate localDate, String futuresCode, String granularity) throws Exception;
 	
 }

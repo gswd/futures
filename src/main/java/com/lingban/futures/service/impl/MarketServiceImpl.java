@@ -37,7 +37,7 @@ public class MarketServiceImpl implements MarketService {
 	protected FuturesRecordsMapper futuresRecordsMapper;
 
 	@Override
-	public Map<String, MarketInfoVO> getMarketInfoDays(DateQueryParam dateParam, String futuresCode) {
+	public Map<String, MarketInfoVO> getMarketInfoDays(DateQueryParam dateParam, String futuresCode) throws Exception {
 		
 		Example example = new Example(FuturesRecordsHistoryDays.class);
 		Criteria criteria = example.createCriteria();
@@ -69,7 +69,7 @@ public class MarketServiceImpl implements MarketService {
 
 	@Override
 	public Map<String, MarketInfoVO> getMarketInfoOfOneDay(LocalDate localDate, String futuresCode,
-			String granularity) {
+			String granularity) throws Exception {
 		Example example = new Example(FuturesRecords.class);
 		Criteria criteria = example.createCriteria();
 		

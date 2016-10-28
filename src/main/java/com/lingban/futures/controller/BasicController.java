@@ -12,7 +12,7 @@ public abstract class BasicController {
 			SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteMapNullValue };
 
 	public static final String SUCCESS = buildSuccessResultInfo();
-	public static final String Fail = buildFailedResultInfo();
+	public static final String FAIL = buildFailedResultInfo();
 
 	/**
 	 * @description: 构造成功返回结果

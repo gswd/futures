@@ -20,7 +20,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 public class FundsHistoryServiceImpl extends AbstractBaseService<FundsHistory> implements FundsHistoryService {
 
 	@Override
-	public List<FundsHistory> getFundsHistoryByPeriod(DateQueryParam dateParam, String orderType) {
+	public List<FundsHistory> getFundsHistoryByPeriod(DateQueryParam dateParam, String orderType) throws Exception{
 		Example example = new Example(FundsHistory.class);
 		Criteria criteria = example.createCriteria();
 		
@@ -66,7 +66,7 @@ public class FundsHistoryServiceImpl extends AbstractBaseService<FundsHistory> i
 	}
 
 	@Override
-	public List<FundsHistory> getFundsHistoryByPeriodAndCode(DateQueryParam dateParam, String futuresCode) {
+	public List<FundsHistory> getFundsHistoryByPeriodAndCode(DateQueryParam dateParam, String futuresCode) throws Exception{
 		Example example = new Example(FundsHistory.class);
 		Criteria criteria = example.createCriteria();
 		

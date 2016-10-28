@@ -50,10 +50,16 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/gainAndLoss" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String futuresFundsInfo(DateQueryParam dateParam, @RequestParam(required = false) String orderType) {
-		
-		List<FundsHistory> fundsHistorys = fundsHistoryService.getFundsHistoryByPeriod(dateParam, orderType);
-		
 		logger.info("GET /gainAndLoss   futuresFundsInfo() ...");
+		
+		List<FundsHistory> fundsHistorys;
+		try {
+			fundsHistorys = fundsHistoryService.getFundsHistoryByPeriod(dateParam, orderType);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
+		
 		return buildResultInfo(StatusCode.SUCCESS, fundsHistorys);
 
 	}
@@ -66,10 +72,16 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/gainAndLoss/{futuresCode}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String futuresFundsInfoByCode(DateQueryParam dateParam, @PathVariable String futuresCode) {
+		logger.info("GET /gainAndLoss/{futuresCode}   futuresFundsInfoByCode() ...");
 		
-		List<FundsHistory> fundsHistorys = fundsHistoryService.getFundsHistoryByPeriodAndCode(dateParam, futuresCode);
+		List<FundsHistory> fundsHistorys;
+		try {
+			fundsHistorys = fundsHistoryService.getFundsHistoryByPeriodAndCode(dateParam, futuresCode);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		
-		logger.info("GET /gainAndLoss   futuresFundsInfo() ...");
 		return buildResultInfo(StatusCode.SUCCESS, fundsHistorys);
 
 	}
@@ -83,10 +95,16 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/socialEmotion/history/{futuresCode}/day" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String socialEmotionHistory(DateQueryParam dateParam, @PathVariable String futuresCode) {
+		logger.info("GET /socialEmotion/history/{futuresCode}/day   socialEmotionHistory() ...");
 		
-		Map<String, SocialEmotionHistoryDays> socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryDays(dateParam, futuresCode);
+		Map<String, SocialEmotionHistoryDays> socialEmotionHistoryDays;
+		try {
+			socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryDays(dateParam, futuresCode);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		
-		logger.info("GET /socialEmotion/history/{futuresCode}/day   SocialEmotionHistory() ...");
 		return buildResultInfo(StatusCode.SUCCESS, socialEmotionHistoryDays);
 		
 	}
@@ -101,10 +119,16 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/socialEmotion/history/{futuresCode}/min/{granularity}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String socialEmotionHistoryWithMin(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity) {
-		
-		Map<String, SocialEmotionHistory> socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryOfOneDay(localDate, futuresCode, granularity);
-		
 		logger.info("GET /socialEmotion/history/{futuresCode}/min/{granularity}   socialEmotionHistoryWithMin() ...");
+		
+		Map<String, SocialEmotionHistory> socialEmotionHistoryDays;
+		try {
+			socialEmotionHistoryDays = socialEmotionService.getSocialEmotionHistoryOfOneDay(localDate, futuresCode, granularity);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
+		
 		return buildResultInfo(StatusCode.SUCCESS, socialEmotionHistoryDays);
 		
 	}
@@ -122,11 +146,16 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/market/history/{futuresCode}/day" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String marketDataByCode(DateQueryParam dateParam, @PathVariable String futuresCode ) {
-		//TODO
-		
-		Map<String, MarketInfoVO> MarketInfoVO = marketService.getMarketInfoDays(dateParam, futuresCode);
-		
 		logger.info("GET /market/history/{futuresCode}/day   marketDataByCode() ...");
+		
+		Map<String, MarketInfoVO> MarketInfoVO;
+		try {
+			MarketInfoVO = marketService.getMarketInfoDays(dateParam, futuresCode);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
+		
 		return buildResultInfo(StatusCode.SUCCESS, MarketInfoVO);
 		
 	}
@@ -142,10 +171,15 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/market/history/{futuresCode}/min/{granularity}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String marketDataByCodeWithMin(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity ) {
-		
-		//TODO
-		Map<String, MarketInfoVO> MarketInfoVO = marketService.getMarketInfoOfOneDay(localDate, futuresCode, granularity);
 		logger.info("GET /market/history/{futuresCode}/min/{granularity}   marketDataByCodeWithMin() ...");
+		
+		Map<String, MarketInfoVO> MarketInfoVO;
+		try {
+			MarketInfoVO = marketService.getMarketInfoOfOneDay(localDate, futuresCode, granularity);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		return buildResultInfo(StatusCode.SUCCESS, MarketInfoVO);
 		
 	}
@@ -161,9 +195,15 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/predictAccuracy/history/{futuresCode}/min/{granularity}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String predictAccuracyHistoryWithMin(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String futuresCode, @PathVariable String granularity ) {
-		
-		Map<String, PredictAccuracyVO> predictAccuracyVO = predictAccuracyService.getPredictAccuracyOfOneDay(localDate, futuresCode, granularity);
 		logger.info("GET /predictAccuracy/history/{futuresCode}/min/{granularity}   predictAccuracyHistoryWithMin() ...");
+		
+		Map<String, PredictAccuracyVO> predictAccuracyVO;
+		try {
+			predictAccuracyVO = predictAccuracyService.getPredictAccuracyOfOneDay(localDate, futuresCode, granularity);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		return buildResultInfo(StatusCode.SUCCESS, predictAccuracyVO);
 	}
 	
@@ -176,9 +216,15 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/predictAccuracy/history/{futuresCode}/day" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String predictAccuracyHistory(DateQueryParam dateParam, @PathVariable String futuresCode) {
-		
-		Map<String, PredictAccuracyVO> predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracyHistoryDays(dateParam, futuresCode);
 		logger.info("GET /predictAccuracy/history/{futuresCode}/day   predictAccuracyHistory() ...");
+		
+		Map<String, PredictAccuracyVO> predictAccuracyHistoryDays;
+		try {
+			predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracyHistoryDays(dateParam, futuresCode);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		return buildResultInfo(StatusCode.SUCCESS, predictAccuracyHistoryDays);
 		
 	}
@@ -192,9 +238,15 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/predictAccuracy/history/{futuresCode}" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String predictAccuracyHistorySummaryByCode(DateQueryParam dateParam, @PathVariable String futuresCode) {
-		
-		List<PredictAccuracyVO> predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracySummary(dateParam, futuresCode, null);
 		logger.info("GET /predictAccuracy/history/{futuresCode}   predictAccuracyHistorySummary() ...");
+		
+		List<PredictAccuracyVO> predictAccuracyHistoryDays;
+		try {
+			predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracySummary(dateParam, futuresCode, null);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		return buildResultInfo(StatusCode.SUCCESS, predictAccuracyHistoryDays);
 		
 	}
@@ -208,9 +260,15 @@ public class FuturesStatisticsController extends BasicController {
 	 */
 	@RequestMapping(value="/predictAccuracy/history" , method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String predictAccuracyHistorySummary(DateQueryParam dateParam, @RequestParam(required = false) String orderType) {
-		
-		List<PredictAccuracyVO> predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracySummary(dateParam, null, orderType);
 		logger.info("GET /predictAccuracy/history/{futuresCode}   predictAccuracyHistorySummary() ...");
+		
+		List<PredictAccuracyVO> predictAccuracyHistoryDays;
+		try {
+			predictAccuracyHistoryDays = predictAccuracyService.getPredictAccuracySummary(dateParam, null, orderType);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return FAIL;
+		}
 		return buildResultInfo(StatusCode.SUCCESS, predictAccuracyHistoryDays);
 		
 	}

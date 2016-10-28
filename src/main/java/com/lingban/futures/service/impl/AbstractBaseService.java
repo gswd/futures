@@ -23,7 +23,7 @@ public abstract class AbstractBaseService<T> {
     public List<T> select(T entity){
         return mapper.select(entity);
     }
-    public List<T> selectAll(){
+    public List<T> selectAll() throws Exception{
     	return mapper.selectAll();
     }
 

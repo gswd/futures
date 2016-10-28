@@ -37,7 +37,7 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 	protected Mapper<SocialEmotionHistory> socialEmotionHistoryMapper;
 
 	@Override
-	public Map<String, SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode) {
+	public Map<String, SocialEmotionHistoryDays> getSocialEmotionHistoryDays(DateQueryParam dateParam, String futuresCode) throws Exception {
 
 		Example example = new Example(SocialEmotionHistoryDays.class);
 		Criteria criteria = example.createCriteria();
@@ -62,7 +62,7 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 	}
 
 	@Override
-	public Map<String, SocialEmotionHistory> getSocialEmotionHistoryOfOneDay(LocalDate localDate, String futuresCode, String granularity) {
+	public Map<String, SocialEmotionHistory> getSocialEmotionHistoryOfOneDay(LocalDate localDate, String futuresCode, String granularity) throws Exception {
 		
 		Example example = new Example(SocialEmotionHistoryDays.class);
 		Criteria criteria = example.createCriteria();

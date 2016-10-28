@@ -15,7 +15,7 @@ public interface MarketService {
 	 * 获取一段时间某品种行情，时间粒度为天.
 	 * @return 每天的收盘价、结算价等信息
 	 */
-	Map<String, MarketInfoVO> getMarketInfoDays(DateQueryParam dateParam, String futuresCode);
+	Map<String, MarketInfoVO> getMarketInfoDays(DateQueryParam dateParam, String futuresCode) throws Exception;
 
 	/**
 	 * 返回某天预测正确率详情
@@ -28,5 +28,5 @@ public interface MarketService {
 	 *            时间粒度 5 、 30、 60
 	 * @return
 	 */
-	Map<String, MarketInfoVO> getMarketInfoOfOneDay(LocalDate localDate, String futuresCode, String granularity);
+	Map<String, MarketInfoVO> getMarketInfoOfOneDay(LocalDate localDate, String futuresCode, String granularity) throws Exception;
 }
