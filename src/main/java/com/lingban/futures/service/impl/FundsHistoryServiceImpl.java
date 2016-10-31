@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.lingban.futures.common.DateQueryParam;
+import com.lingban.futures.common.cfg.BissinesConfig;
 import com.lingban.futures.model.FundsHistory;
 import com.lingban.futures.service.FundsHistoryService;
 
@@ -49,7 +50,7 @@ public class FundsHistoryServiceImpl extends AbstractBaseService<FundsHistory> i
 			
 			//(nowFunds - baseFunds) * 100 / baseFunds
 			//保留两位小数，向（距离）最近的一边舍入，除非两边（的距离）是相等,如果是这样，向上舍入, 1.55保留一位小数结果为1.6
-			fundsHistory.setChangeRate(nowFunds.subtract(baseFunds).multiply(new BigDecimal("100")).divide(baseFunds, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			fundsHistory.setChangeRate(nowFunds.subtract(baseFunds).multiply(BissinesConfig.BIGDECIMAL_100).divide(baseFunds, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			
 			fundsHistoryResult.add(fundsHistory);
 		});
@@ -91,9 +92,9 @@ public class FundsHistoryServiceImpl extends AbstractBaseService<FundsHistory> i
 		fundsHistory.setNowFunds(nowFunds);
 		fundsHistory.setCode(futuresCode);
 		
-		//(baseFunds + nowFunds) * 100 / baseFunds
+		//(baseFunds - nowFunds) * 100 / baseFunds
 		//保留两位小数，向（距离）最近的一边舍入，除非两边（的距离）是相等,如果是这样，向上舍入, 1.55保留一位小数结果为1.6
-		fundsHistory.setChangeRate(baseFunds.subtract(nowFunds).multiply(new BigDecimal("100")).divide(baseFunds, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		fundsHistory.setChangeRate(baseFunds.subtract(nowFunds).multiply(BissinesConfig.BIGDECIMAL_100).divide(baseFunds, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		
 		fundsHistoryResult.add(fundsHistory);
 		

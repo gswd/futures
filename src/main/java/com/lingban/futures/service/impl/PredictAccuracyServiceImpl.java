@@ -59,7 +59,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 					vo.setCode(pah.getCode());
 					vo.setCorrectTimes(pah.getCorrect());
 					vo.setId(pah.getId());
-					vo.setAccuracy(pah.getAccuracy());
+					vo.setAccuracy(pah.getAccuracy().multiply(BissinesConfig.BIGDECIMAL_100).setScale(2, BigDecimal.ROUND_HALF_UP));
 					vo.setTotalTimes(pah.getNum());
 					vo.setTimePoint(pah.getCreateTime());
 					return vo;
@@ -84,7 +84,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 			vo.setCode(pah.getCode());
 			vo.setCorrectTimes(pah.getCorrect());
 			vo.setId(pah.getId());
-			vo.setAccuracy(pah.getAccuracy());
+			vo.setAccuracy(pah.getAccuracy().multiply(BissinesConfig.BIGDECIMAL_100).setScale(2, BigDecimal.ROUND_HALF_UP));
 			vo.setTotalTimes(pah.getNum());
 			vo.setTimePoint(pah.getCreateTime());
 			return vo;
@@ -141,7 +141,7 @@ public class PredictAccuracyServiceImpl implements PredictAccuracyService {
 			vo.setTotalTimes(v.get(Boolean.TRUE) + v.get(Boolean.FALSE));
 			vo.setCorrectTimes(v.get(Boolean.TRUE));
 			vo.setTimePoint(Date.from(LocalDateTime.of(localDate,LocalTime.parse(k)).atZone(ZoneId.systemDefault()).toInstant()));
-			vo.setAccuracy(BigDecimal.valueOf(vo.getCorrectTimes()).divide(BigDecimal.valueOf(vo.getTotalTimes()), 4, BigDecimal.ROUND_HALF_UP));
+			vo.setAccuracy(BigDecimal.valueOf(vo.getCorrectTimes()).multiply(BissinesConfig.BIGDECIMAL_100).divide(BigDecimal.valueOf(vo.getTotalTimes()), 2, BigDecimal.ROUND_HALF_UP));
 			
 			predictAccuracyVOMap.put(k, vo);
 		});

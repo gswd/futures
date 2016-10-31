@@ -1,5 +1,6 @@
 package com.lingban.futures.common.cfg;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class BissinesConfig {
 	public static final List<LocalTime> TIMES_30MIN = generateTimes(30);
 	public static final List<LocalTime> TIMES_60MIN = generateTimes(60);
 	
+	public static final BigDecimal BIGDECIMAL_100 = new BigDecimal("100");
 	
 	@Autowired
 	private FuturesInfoService futuresInfoService;

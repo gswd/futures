@@ -1,11 +1,6 @@
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Test {
 	public static void main(String[] args) {
@@ -42,9 +37,15 @@ public class Test {
 //		LocalDate parsedDate = LocalDate.parse(text, formatter);
 //		System.out.println(parsedDate);
 		
-		System.out.println(LocalTime.parse("10:00", DateTimeFormatter.ofPattern("HH:mm")));
-		System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
+//		System.out.println(LocalTime.parse("10:00", DateTimeFormatter.ofPattern("HH:mm")));
+//		System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		byte aa = -1;
+		
+		System.out.println(Integer.toBinaryString(aa & 0xFF));
+		System.out.println(aa & 0xFF);
+		System.out.println(Integer.toBinaryString(~aa + 1));
+		
+		
 		// System.out.println(LocalDate.now());
 
 	}

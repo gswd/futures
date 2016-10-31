@@ -111,8 +111,8 @@ public class SocialEmotionServiceImpl implements SocialEmotionService {
 			SocialEmotionHistory se = new SocialEmotionHistory();
 			
 			se.setCode(futuresCode);
-			se.setPositive(BigDecimal.valueOf(v.stream().collect(Collectors.averagingDouble(v1 -> v1.getPositive().doubleValue()))));
-			se.setNegative(BigDecimal.valueOf(v.stream().collect(Collectors.averagingDouble(v1 -> v1.getNegative().doubleValue()))));
+			se.setPositive(BigDecimal.valueOf(v.stream().collect(Collectors.averagingDouble(v1 -> v1.getPositive().doubleValue()))).setScale(4, BigDecimal.ROUND_HALF_UP));
+			se.setNegative(BigDecimal.valueOf(v.stream().collect(Collectors.averagingDouble(v1 -> v1.getNegative().doubleValue()))).setScale(4, BigDecimal.ROUND_HALF_UP));
 			
 			socialEmotionHistoryMap.put(k, se);
 		});
