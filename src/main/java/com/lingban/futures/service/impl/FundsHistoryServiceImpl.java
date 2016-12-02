@@ -82,6 +82,10 @@ public class FundsHistoryServiceImpl extends AbstractBaseService<FundsHistory> i
 		example.orderBy("createTime").asc();
 		List<FundsHistory> fundsHistoryList = mapper.selectByExample(example);
 		
+		if(fundsHistoryList == null || fundsHistoryList.size() == 0){
+			return fundsHistoryList;
+		}
+		
 		List<FundsHistory> fundsHistoryResult = new ArrayList<>();
 		
 		BigDecimal baseFunds = fundsHistoryList.get(0).getBaseFunds();
